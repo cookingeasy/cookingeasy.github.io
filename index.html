@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Company Directory</title>
+    <!-- Favicon -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="libs/images/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="libs/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="libs/images/favicon-16x16.png"
+    />
+    <link rel="manifest" href="libs/images/site.webmanifest" />
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="libs/fontawesome/css/all.min.css" />
+    <link rel="stylesheet" href="libs/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="libs/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="libs/jquery-toast/css/jquery.toast.min.css" />
+    <link rel="stylesheet" href="libs/css/style.css" />
+  </head>
+  <body>
+    <!-- Preloader container -->
+    <div class="pre-load"></div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+      <h1 id="title" class="navbar-nav d-flex justify-content-center">
+        Company Directory
+      </h1>
+    </nav>
+
+    <ul class="nav nav-tabs fixed-top">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#personnel"
+          >Personnel</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#departments"
+          >Departments</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#locations">Locations</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="personnel">
+        <ul class="navbar-nav fixed-top-nav">
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="modal" data-target="#addModal">
+              <i class="fas fa-user-plus mr-2"></i>Add Personnel
+            </a>
+          </li>
+        </ul>
+
+        <div id="mainContainer">
+          <div class="row">
+            <div class="col-12">
+              <form id="filterForm">
+                <h4>Filters</h4>
+                <input
+                  type="text"
+                  placeholder="Search by Name..."
+                  id="nameSearch"
+                />
+                <select id="departmentSearch">
+                  <option value="">All Departments</option>
+                </select>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <table
+                id="personnelTable"
+                class="table table-bordered table-striped d-none d-lg-table"
+              >
+                <tbody id="personnelTbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="row d-lg-none">
+            <div id="container2" class="col-12"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="departments">
+        <ul class="navbar-nav fixed-top-nav">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              data-toggle="modal"
+              data-target="#addDepartmentModal"
+            >
+              <i class="fas fa-building mr-2"></i>Add Department</a
+            >
+          </li>
+        </ul>
+
+        <div class="container" id="departmentsContainer">
+          <table class="table table-bordered table-striped">
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="locations">
+        <ul class="navbar-nav fixed-top-nav">
+          <li class="nav-item">
+            <a
+              class="nav-item nav-link"
+              data-toggle="modal"
+              data-target="#addLocationModal"
+            >
+              <i class="fas fa-map-marker-alt mr-2"></i>Add Location</a
+            >
+          </li>
+        </ul>
+
+        <div class="container" id="locationsContainer">
+          <table class="table table-bordered table-striped">
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit personnel modal -->
+    <div id="editModal" class="modal fade">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <form id="editForm">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Personnel</h5>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" id="employeeID" />
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="firstName"
+                  id="editFirstName"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="lastName"
+                  id="editLastName"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="jobTitle">Job Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="jobTitle"
+                  id="editJobTitle"
+                />
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  name="email"
+                  id="editEmail"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="departmentSearch3">Department:</label>
+                <select
+                  id="departmentSearch3"
+                  required
+                  title="Department is required"
+                ></select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+                value="Cancel"
+              />
+              <input type="submit" class="btn btn-success" value="Save" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit department modal -->
+    <div id="editDepartmentModal" class="modal fade">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <form id="editDepartmentForm">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Department</h5>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" id="departmentID" />
+              <div class="form-group">
+                <label for="editDepartmentName">Department Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="editDepartmentName"
+                  id="editDepartmentName"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="editDepartmentLocation">Location</label>
+                <select
+                  class="form-control"
+                  name="editDepartmentLocation"
+                  id="editDepartmentLocation"
+                  required
+                ></select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+                value="Cancel"
+              />
+              <input type="submit" class="btn btn-success" value="Save" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit location modal -->
+    <div id="editLocationModal" class="modal fade">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <form id="editLocationForm">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Location</h5>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" id="locationID" />
+              <div class="form-group">
+                <label for="editLocationName">Location Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="editLocationName"
+                  id="editLocationName"
+                  required
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+                value="Cancel"
+              />
+              <input type="submit" class="btn btn-success" value="Save" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add New Employee Modal -->
+    <div id="addModal" class="modal fade">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <form id="addEmployeeForm">
+            <div class="modal-header">
+              <h5 class="modal-title">Add New Employee</h5>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="firstName"
+                  id="firstNameInput"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="lastName"
+                  id="lastNameInput"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="jobTitle">Job Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="jobTitle"
+                  id="jobTitleInput"
+                />
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  name="email"
+                  id="emailInput"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="departmentSearch5">Department:</label>
+                <select
+                  id="departmentSearch2"
+                  required
+                  title="Department is required"
+                ></select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+                value="Cancel"
+                id="closeButtonId"
+              />
+              <input
+                type="submit"
+                class="btn btn-success"
+                value="Save"
+                id="saveChangesButton"
+              />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add New Department Modal -->
+    <div id="addDepartmentModal" class="modal fade">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <form id="addDepartmentForm">
+            <div class="modal-header">
+              <h5 class="modal-title">Add New Department</h5>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="departmentNameInput">Department Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="departmentNameInput"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="locationIdInput">Location</label>
+                <select
+                  id="locationIdInput"
+                  class="form-control"
+                  required
+                ></select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+                value="Cancel"
+                id="closeButtonId2"
+              />
+              <input
+                type="submit"
+                class="btn btn-success"
+                value="Save"
+                id="saveChangesButton2"
+              />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add New Location Modal -->
+    <div
+      class="modal fade"
+      id="addLocationModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="addLocationModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <form id="addLocationForm">
+            <div class="modal-header">
+              <h5 class="modal-title">Add New Location</h5>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="locationNameInput">Location Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="locationNameInput"
+                  required
+                  title="Location Name is required"
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+                value="Cancel"
+                id="closeButtonId"
+              />
+              <input
+                type="submit"
+                class="btn btn-success"
+                value="Save"
+                id="saveChangesButton1"
+              />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="cantDeleteDepartmentModal"
+      class="modal fade"
+      tabindex="-1"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="cantDeleteDepartmentModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Cannot remove department ...</h5>
+          </div>
+          <div class="modal-body">
+            You cannot remove the entry for
+            <span id="cantDeleteDeptName" class="fw-bold"></span> because it has
+            <span id="pc" class="fw-bold"></span> employees assigned to it.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="areYouSureDeleteDepartmentModal" class="modal fade">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Remove department?</h5>
+          </div>
+          <div class="modal-body">
+            Are you sure that you want to remove the entry for
+            <span id="areYouSureDeptName" class="fw-bold"></span>?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              id="yesDelete"
+              class="btn btn-default"
+              data-dismiss="modal"
+            >
+              Yes
+            </button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              NO
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="cantDeleteLocationModal" class="modal fade">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Cannot remove location ...</h5>
+          </div>
+          <div class="modal-body">
+            You cannot remove the entry for
+            <span id="cantDeleteLocName" class="fw-bold"></span> because it has
+            <span id="departmentCount" class="fw-bold"></span> departments
+            assigned to it.
+          </div>
+          <div class="modal-footer">
+            <input
+              type="button"
+              class="btn btn-default"
+              data-dismiss="modal"
+              value="OK"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="areYouSureDeleteLocationModal" class="modal fade">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Remove Location?</h5>
+          </div>
+          <div class="modal-body">
+            Are you sure that you want to remove the entry for
+            <span id="areYouSureLocationName" class="fw-bold"></span>?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              id="yesDelete2"
+              class="btn btn-default"
+              data-dismiss="modal"
+            >
+              Yes
+            </button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              No
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="areYouSureDeletePersonnelModal" class="modal fade">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Remove personnel?</h5>
+          </div>
+          <div class="modal-body">
+            Are you sure that you want to remove the personnel
+            <span id="areYouSurePersonnelName" class="fw-bold"></span>?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              id="yesDelete3"
+              class="btn btn-default"
+              data-dismiss="modal"
+            >
+              Yes
+            </button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              NO
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Scripts-->
+    <script src="libs/js/jquery-2.2.3.min.js"></script>
+    <script src="libs/js/script.js"></script>
+    <script src="libs/bootstrap/js/bootstrap.js"></script>
+    <script src="libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="libs/jquery-toast/js/jquery.toast.min.js"></script>
+  </body>
+</html>
